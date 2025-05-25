@@ -6,7 +6,11 @@ import os
 
 server_address = ('172.16.16.101', 7778)
 
-logging.basicConfig(format='%(asctime)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S', level=logging.WARNING)
+logging.basicConfig(
+    format='[%(asctime)s] %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S',
+    level=logging.INFO
+)
 
 def send_command(command_str=""):
     global server_address
@@ -14,7 +18,6 @@ def send_command(command_str=""):
     sock.settimeout(60)  # 60 detik timeout untuk file besar
     sock.connect(server_address)
     logging.warning(f"connecting to {server_address}")
-    
     try:
         logging.warning(f"sending message")
         # Kirim data dalam chunks untuk file besar
