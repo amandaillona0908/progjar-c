@@ -22,7 +22,7 @@ class ProcessTheClient(threading.Thread):
 
     def run(self):
         while True:
-            data = self.connection.recv(32)
+            data = self.connection.recv(4096)
             if data:
                 d = data.decode()
                 now = time.strftime('%Y-%m-%d %H:%M:%S')
