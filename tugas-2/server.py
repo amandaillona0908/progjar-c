@@ -4,6 +4,12 @@ import threading
 import logging
 from datetime import datetime
 
+logging.basicConfig(
+    format='[%(asctime)s] %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S',
+    level=logging.INFO
+)
+
 class ProcessTheClient(threading.Thread):
     def __init__(self, connection, address):
         self.connection = connection
@@ -34,7 +40,6 @@ class ProcessTheClient(threading.Thread):
                     err = "PERINTAH TIDAK VALID\r\n"
                     self.connection.sendall(err.encode())
                     logging.warning(f"[SERVER] Perintah tidak dikenal dari {self.address}: {text}")
-                    break
         except Exception as e:
             logging.error(f"[SERVER] Error dengan {self.address}: {e}")
         finally:
@@ -48,8 +53,11 @@ class Server(threading.Thread):
         threading.Thread.__init__(self)
 
     def run(self):
-        self.my_socket.bind(('0.0.0.0', 45000))
+        host = '0.0.0.0'
+        port = 45000
+        self.my_socket.bind((host, port))
         self.my_socket.listen(1)
+        logging.warning(f"SERVER LISTENING ON {host}:{port}") # Tambahan pesan ini
         while True:
             self.connection, self.client_address = self.my_socket.accept()
             logging.warning(f"connection from {self.client_address}")
